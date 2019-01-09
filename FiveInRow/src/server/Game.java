@@ -11,6 +11,7 @@ public class Game {
 	private int currPlayer;
 	private boolean readyToPlay;
 	private UUID gameId;
+	private int winner = 255;
 	
 	public Game(String playerName) {
 		matrix = new Matrix();
@@ -42,6 +43,10 @@ public class Game {
 		return gameId;
 	}
 
+	public int getWinner() {
+		return winner;
+	}
+
 	public  String getBoard() {
 		return matrix.toString();
 	}
@@ -53,18 +58,23 @@ public class Game {
 	}
 	
 	public boolean insertDisk(int column) {
-		if(!isReadyToPlay()) return false;
 		int row = matrix.insertDisk(column, currPlayer);
-		if(row != -1) {
+		if(row != 255) {
+			if(checkWinner(row, column))return true;
 			turn++;
 			if(currPlayer == 0) currPlayer = 1;
 			else currPlayer = 0;
+			return true;
 		}
-		return true;
+		return false;
 	}
 	
-	public boolean checkWinner(int row, int column) {
-		return matrix.checkWinner(row, column);
+	private boolean checkWinner(int row, int column) {
+		if(matrix.checkWinner(row, column)) {
+			winner = currPlayer;
+			return true;
+		}
+		else return false;
 	}
 
 }

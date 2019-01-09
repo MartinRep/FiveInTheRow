@@ -33,9 +33,18 @@ public class PlayGame extends HttpServlet {
 			UUID playerId = UUID.fromString(request.getParameter("playerId"));
 			int command = Integer.valueOf(request.getParameter("command"));
 			command = Integer.valueOf(command);
-			if(command == 0) endGame(gameId);	// One of the players disconnected
-			if(game.getPlayers().get(game.getCurrPlayer()).getUuid() == playerId) {		// Checks if it is players turn
-				Util.play(game, command);
+			if(command == 255) endGame(gameId);	// One of the players disconnected
+			if(game.getPlayers().get(game.getCurrPlayer()).getUuid().equals(playerId)) {		// Checks if it is players turn
+				if(game.getWinner() != 255) {
+					// Initial check if other player didn't win already
+				}
+				if(!game.insertDisk(command)) {
+					response.addHeader("ERROR", "Ilegal move");
+				}
+				if(game.getWinner() != 255) {
+					// Check if latest move didn't resulted in winning condition
+				}
+				
 				response.getWriter().append(game.getBoard());
 			} else {
 				response.addHeader("ERROR", "Not your turn!");

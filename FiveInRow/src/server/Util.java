@@ -17,16 +17,10 @@ public class Util {
 
 	public static Game findGame(UUID gameId) {
 		for (Game game : games) {
-			if(game.getGameId() == gameId) return game;
+			System.out.println(String.valueOf(game.getGameId()));
+			if(game.getGameId().equals(gameId)) return game;
 		}
 		return null;
-	}
-	
-	public static boolean play(Game game , int column) {
-		if(game != null) {
-			game.insertDisk(column);
-			return true;
-		} else return false;
 	}
 	
 	public static Game startGame(String playerName) {
