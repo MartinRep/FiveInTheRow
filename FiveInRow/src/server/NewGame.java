@@ -35,15 +35,19 @@ public class NewGame extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String playerName = "";
 		try {
-			playerName = request.getParameter("playerName");
+			String playerName = request.getParameter("playerName");
+			if(playerName == null) response.sendError(400, "Error: No player's name given.");
+			else {
+				System.out.println("Players name: " + playerName);
+				Game game = Util.startGame(playerName);	
+				response.getWriter().append(game.getBoard());
+				response.addHeader("gameId", String.valueOf(game.getGameId()));
+				response.addHeader("playerId", String.valueOf(game.getPlayers().get(game.getPlayers().size()-1).getUuid()));				
+			}
 		} catch(NullPointerException exp) {
 			response.sendError(400, "Error: No player's name given.");
 		}
-		Game game = Util.startGame(playerName);	
-		response.getWriter().append(game.getBoard());
-		response.addHeader("gameId", String.valueOf(game.getGameId()));
-		response.addHeader("playerId", String.valueOf(game.getPlayers().get(game.getPlayers().size()-1).getUuid()));
+		
 	}
 }
