@@ -38,10 +38,10 @@ public class PlayGame extends HttpServlet {
 				Util.play(game, command);
 				response.getWriter().append(game.getBoard());
 			} else {
-				response.sendError(400, "Error! Not your turn!");
+				response.addHeader("ERROR", "Not your turn!");
 			}
 		} catch(Exception nullException) {
-			response.sendError(400, "Other player disconected / Game doesn't exists.");
+			response.addHeader("ERROR", "Other player disconected / Game doesn't exists.");
 		}
 	}
 	

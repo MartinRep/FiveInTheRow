@@ -37,7 +37,7 @@ public class NewGame extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			String playerName = request.getParameter("playerName");
-			if(playerName == null) response.sendError(400, "Error: No player's name given.");
+			if(playerName == null) response.addHeader("ERROR", "No player's name given.");
 			else {
 				System.out.println("Players name: " + playerName);
 				Game game = Util.startGame(playerName);	
@@ -46,7 +46,7 @@ public class NewGame extends HttpServlet {
 				response.addHeader("playerId", String.valueOf(game.getPlayers().get(game.getPlayers().size()-1).getUuid()));				
 			}
 		} catch(NullPointerException exp) {
-			response.sendError(400, "Error: No player's name given.");
+			response.addHeader("ERROR", "No player's name given.");
 		}
 		
 	}
