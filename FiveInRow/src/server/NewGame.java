@@ -22,14 +22,12 @@ public class NewGame extends HttpServlet {
      */
     public NewGame() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see Servlet#init(ServletConfig)
 	 */
 	public void init(ServletConfig config) throws ServletException {
-		// TODO Auto-generated method stub
 		Util.init();
 	}
 
@@ -37,14 +35,15 @@ public class NewGame extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		// make if statement for request.GetParameter("playerUUID") to read the column for disk insertion
-		
-		Game game = Util.startGame("TestPlayer1");
-		response.getWriter().append("Game UUID: " + String.valueOf(game.getGameId())).append(" Player number: " + String.valueOf(game.getPlayers().get(game.getCurrPlayer()).getName())).append(" Game board: " + game.getBoard());
+		String playerName = "";
+		try {
+			playerName = request.getParameter("playerName");
+		} catch(NullPointerException exp) {
+			response.sendError(400, "Error: No player's name given.");
+		}
+		Game game = Util.startGame(playerName);	
+		response.getWriter().append(game.getBoard());
 		response.addHeader("gameId", String.valueOf(game.getGameId()));
 		response.addHeader("playerId", String.valueOf(game.getPlayers().get(game.getCurrPlayer()).getUuid()));
-		response.addIntHeader("playersTurn", game.getCurrPlayer());
-		response.addIntHeader("turn", game.getTurn());
 	}
 }
