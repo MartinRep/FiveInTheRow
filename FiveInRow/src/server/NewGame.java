@@ -44,6 +44,6 @@ public class NewGame extends HttpServlet {
 		Game game = Util.startGame(playerName);	
 		response.getWriter().append(game.getBoard());
 		response.addHeader("gameId", String.valueOf(game.getGameId()));
-		response.addHeader("playerId", String.valueOf(game.getPlayers().get(game.getCurrPlayer()).getUuid()));
+		response.addHeader("playerId", String.valueOf(game.getPlayers().get(game.getPlayers().size()-1).getUuid()));
 	}
 }

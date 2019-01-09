@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class PlayGame
  */
-@WebServlet(asyncSupported = true, description = "Five in the row Play Excisting Game", urlPatterns = { "/PlayGame" })
+@WebServlet(asyncSupported = true, description = "Five in the row Play Excisting Game", urlPatterns = { "/play" })
 public class PlayGame extends HttpServlet {
 	private static final long serialVersionUID = 131245234L;
 	
@@ -27,22 +27,21 @@ public class PlayGame extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Game game = null;
 		try {
 			UUID gameId = UUID.fromString(request.getParameter("gameId"));
-			game = Util.play(gameId);
+			Game game = Util.findGame(gameId);
 			UUID playerId = UUID.fromString(request.getParameter("playerId"));
 			int command = Integer.valueOf(request.getParameter("command"));
 			command = Integer.valueOf(command);
-			if(command == 0) endGame(gameId);
-			if(game.getPlayers().get(game.getCurrPlayer()).getUuid() == playerId) {
-				Util.play(gameId);
+			if(command == 0) endGame(gameId);	// One of the players disconnected
+			if(game.getPlayers().get(game.getCurrPlayer()).getUuid() == playerId) {		// Checks if it is players turn
+				Util.play(game, command);
 				response.getWriter().append(game.getBoard());
 			} else {
 				response.sendError(400, "Error! Not your turn!");
 			}
 		} catch(Exception nullException) {
-			response.getWriter().append("Other player disconected / Game doesn't exists.");
+			response.sendError(400, "Other player disconected / Game doesn't exists.");
 		}
 	}
 	

@@ -15,18 +15,18 @@ public class Util {
 		games = new ArrayList<Game>();
 	}
 
-	private static Game findGame(UUID gameId) {
+	public static Game findGame(UUID gameId) {
 		for (Game game : games) {
 			if(game.getGameId() == gameId) return game;
 		}
 		return null;
 	}
 	
-	public static Game play(UUID gameId) {
-		if(games != null) {
-				return findGame(gameId);
-			}			
-		return null;
+	public static boolean play(Game game , int column) {
+		if(game != null) {
+			game.insertDisk(column);
+			return true;
+		} else return false;
 	}
 	
 	public static Game startGame(String playerName) {
