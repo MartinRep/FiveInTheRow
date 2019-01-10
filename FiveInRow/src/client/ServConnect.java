@@ -9,9 +9,9 @@ import java.util.List;
 
 public class ServConnect {
 	
-	String serverURL;
-	String playerId = "";
-	String gameId = "";
+	private String serverURL;
+	private String playerId = "";
+	private String gameId = "";
 	
 	public ServConnect(String serverURL) {
 		super();
@@ -30,7 +30,7 @@ public class ServConnect {
 		this.playerId = playerId;
 	}
 
-	public String startGame(String name) {
+	public String startGame(String name) throws IOException {
 		try {
 			ServerResponse sr = getResponse("?playerName=" + name);
 			List<String> errorHeader = sr.getHeaders().getOrDefault("ERROR", null);
@@ -42,13 +42,18 @@ public class ServConnect {
 				setPlayerId(playerHeader.get(0));
 				return null;				
 			}
-		} catch (IOException | NullPointerException e) {
+		} catch (NullPointerException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 	
-	
+	public String playGame(int column) throws IOException {
+		ServerResponse sr = getResponse("/play?gameId=" + gameId + "&playerId=" + playerId + "&command=" + String.valueOf(column));
+		List<String> errorHeader = sr.getHeaders().getOrDefault("ERROR", null);
+		if(errorHeader != null)	return errorHeader.get(0);
+		else return sr.getBody();
+	}
 
 	private ServerResponse getResponse(String command) throws IOException {
 		ServerResponse servResponse = new ServerResponse();

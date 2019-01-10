@@ -1,14 +1,20 @@
 package client;
 
+import java.io.IOException;
+
 public class Runner {
 	private static String serverURL = "http://localhost:8080/FiveInRow/";
 	public static void main(String[] args) {
 		 
 		ServConnect fir = new ServConnect(serverURL);
-		String error = fir.startGame("");
-		System.out.println(fir.gameId);
-		System.out.println(fir.playerId);
-		System.out.println(error);
+		try {
+			String error = fir.startGame("Repo");
+			System.out.println(error);
+			System.out.println(fir.playGame(0));
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
 	}
 	
 	
