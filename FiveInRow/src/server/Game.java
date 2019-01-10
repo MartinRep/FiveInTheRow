@@ -31,8 +31,8 @@ public class Game {
 		return turn;
 	}
 
-	public  int getCurrPlayer() {
-		return currPlayer;
+	public  Player getCurrPlayer() {
+		return players.get(currPlayer);
 	}
 
 	public  boolean isReadyToPlay() {
@@ -57,7 +57,15 @@ public class Game {
 		return players.get(1);
 	}
 	
+	public String getOtherPlayer(UUID thisPlayer) {
+		for (Player player : players) {
+			if(!player.getUuid().equals(thisPlayer)) return String.valueOf(player.getUuid());
+		}
+		return null;
+	}
+	
 	public boolean insertDisk(int column) {
+		if(column > 8 && column < 0) return false;	// illegal column number selected 
 		int row = matrix.insertDisk(column, currPlayer);
 		if(row != 255) {
 			if(checkWinner(row, column))return true;

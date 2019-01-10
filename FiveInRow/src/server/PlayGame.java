@@ -29,26 +29,27 @@ public class PlayGame extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			UUID gameId = UUID.fromString(request.getParameter("gameId"));
-			Game game = Util.findGame(gameId);
 			UUID playerId = UUID.fromString(request.getParameter("playerId"));
-			int command = Integer.valueOf(request.getParameter("command"));
-			command = Integer.valueOf(command);
-			if(command == 255) endGame(gameId);	// One of the players disconnected
-			if(game.getPlayers().get(game.getCurrPlayer()).getUuid().equals(playerId)) {		// Checks if it is players turn
-				if(game.getWinner() != 255) {
-					// Initial check if other player didn't win already
-				}
-				if(!game.insertDisk(command)) {
-					response.addHeader("ERROR", "Ilegal move");
-				}
-				if(game.getWinner() != 255) {
-					// Check if latest move didn't resulted in winning condition
-				}
-				
-				response.getWriter().append(game.getBoard());
-			} else {
-				response.addHeader("ERROR", "Not your turn!");
+			int command = Integer.valueOf(request.getParameter("command"));	// 0-9 column selection, 255 end of game command
+			Game game = Util.findGame(gameId);	// return game or null, if game not found. This will be catch by exception and returns error
+			if(game.getWinner() != 255) {	// Check if other player didn't win already
+				response.addHeader("WINNER", game.getOtherPlayer(playerId));
+				endGame(gameId);
+			}else {
+				if(command == 255) endGame(gameId);	// One of the players disconnected
+				if(game.getCurrPlayer().getUuid().equals(playerId)) {		// Checks if it is players turn
+					if(!game.insertDisk(command)) {	// Insert a disk or return error
+						response.addHeader("ERROR", "Ilegal move");
+					} else if(game.getWinner() != 255) {	// Check if latest move didn't resulted in winning condition
+						response.addHeader("WINNER", game.getCurrPlayer().getName());
+					}
+					response.addHeader("OTHERPLAYER", game.getOtherPlayer(playerId));	// always return the name of other player
+				} else {
+					if(game.isReadyToPlay()) response.addHeader("ERROR", "Not your turn!");
+					else response.addHeader("ERROR", "Waiting for another player");
+				}				
 			}
+			response.getWriter().append(game.getBoard());
 		} catch(Exception nullException) {
 			response.addHeader("ERROR", "Other player disconected / Game doesn't exists.");
 		}
