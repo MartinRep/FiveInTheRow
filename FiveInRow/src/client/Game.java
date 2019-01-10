@@ -7,13 +7,13 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 
-public class ServConnect {
+public class Game {
 	
 	private String serverURL;
 	private String playerId = "";
 	private String gameId = "";
 	
-	public ServConnect(String serverURL) {
+	public Game(String serverURL) {
 		super();
 		setServerURL(serverURL);
 	}
@@ -30,7 +30,7 @@ public class ServConnect {
 		this.playerId = playerId;
 	}
 
-	public String startGame(String name) throws IOException {
+	public String start(String name) throws IOException {
 		try {
 			ServerResponse sr = getResponse("?playerName=" + name);
 			List<String> errorHeader = sr.getHeaders().getOrDefault("ERROR", null);
@@ -48,7 +48,7 @@ public class ServConnect {
 		}
 	}
 	
-	public String playGame(int column) throws IOException {
+	public String play(int column) throws IOException {
 		ServerResponse sr = getResponse("/play?gameId=" + gameId + "&playerId=" + playerId + "&command=" + String.valueOf(column));
 		List<String> errorHeader = sr.getHeaders().getOrDefault("ERROR", null);
 		if(errorHeader != null)	return errorHeader.get(0);

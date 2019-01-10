@@ -6,11 +6,11 @@ public class Runner {
 	private static String serverURL = "http://localhost:8080/FiveInRow/";
 	public static void main(String[] args) {
 		 
-		ServConnect fir = new ServConnect(serverURL);
+		Game game = new Game(serverURL);
 		try {
-			String error = fir.startGame("Repo");
+			String error = game.start("Repo");
 			System.out.println(error);
-			System.out.println(fir.playGame(0));
+			System.out.println(game.play(0));
 		} catch (IOException e) {
 			
 			e.printStackTrace();
