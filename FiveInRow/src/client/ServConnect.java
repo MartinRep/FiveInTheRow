@@ -30,17 +30,21 @@ public class ServConnect {
 		this.playerId = playerId;
 	}
 
-	public boolean startGame(String name) {
+	public String startGame(String name) {
 		try {
 			ServerResponse sr = getResponse("?playerName=" + name);
-			List<String> gameHeader = sr.getHeaders().getOrDefault("gameId", null);
-			setGameId(gameHeader.get(0));
-			List<String> playerHeader = sr.getHeaders().getOrDefault("playerId", null);
-			setPlayerId(playerHeader.get(0));
-			return true;
+			List<String> errorHeader = sr.getHeaders().getOrDefault("ERROR", null);
+			if(errorHeader != null)	return errorHeader.get(0);
+			else {
+				List<String> gameHeader = sr.getHeaders().getOrDefault("gameId", null);
+				setGameId(gameHeader.get(0));
+				List<String> playerHeader = sr.getHeaders().getOrDefault("playerId", null);
+				setPlayerId(playerHeader.get(0));
+				return null;				
+			}
 		} catch (IOException | NullPointerException e) {
 			e.printStackTrace();
-			return false;
+			return null;
 		}
 	}
 	

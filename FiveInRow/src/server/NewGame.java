@@ -36,7 +36,7 @@ public class NewGame extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String playerName = request.getParameter("playerName");
-		if(playerName == null) response.addHeader("ERROR", "No player's name given.");
+		if(playerName.equals(null) || playerName.equals("")) response.addHeader("ERROR", "No player's name given.");
 		else {
 			Game game = Util.startGame(playerName);	
 			response.getWriter().append(game.getBoard());
