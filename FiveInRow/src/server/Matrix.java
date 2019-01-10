@@ -3,7 +3,7 @@ package server;
 public class Matrix {
 	private int [][] matrix;
 
-	public Matrix() {
+	public Matrix() {		// Constructor with matrix initialization to 255 value. 0 is for fisrt player, 1 for second player
 		matrix = new int[6][9];
 		for(int row = 0; row < 6; row++) {
 			for(int column = 0; column < 9; column++) {
@@ -16,7 +16,7 @@ public class Matrix {
 		return matrix;
 	}
 
-	public int insertDisk(int column, int disk) {
+	public int insertDisk(int column, int disk) {	// insert disk on top of selected column, or return 255 in case the column is full already
 		for(int row = 5; row >=0; row--) {
 			if(matrix[row][column] == 255) {
 				matrix[row][column] = disk;
