@@ -7,11 +7,12 @@ import java.util.concurrent.TimeUnit;
 
 public class Runner {
 	final private static String serverURL = "http://localhost:8080/FiveInRow/";
+	private static Game game;
 	public static void main(String[] args) {
 		 
 		int column = 255;
 		Scanner keyboard = new Scanner(System.in);
-		Game game = new Game(serverURL);
+		game = new Game(serverURL);
 		String error = "";
 		String name;
 		ServerResponse initial;
@@ -61,6 +62,10 @@ public class Runner {
 									e.printStackTrace();
 								}
 							} while (errorHeader.contains("Not your turn!"));
+							if(errorHeader.contains("Other player disconected / Game doesn't exists.")) {
+								System.out.println(errorHeader);
+								column = 10;
+							}
 							System.out.println(sr.getBoard().toString());
 						}
 				}
@@ -70,10 +75,17 @@ public class Runner {
 			} while (column != 10);
 			game.play(9);
 			keyboard.close();
+			game = null;
 		} catch (IOException e) {
 			System.out.println("Error connecting to Server. " + e.getMessage());
 		}
 	}
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+		if(game != null) game.play(9);
+	}
+	
 	
 	
 }
