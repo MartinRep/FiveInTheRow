@@ -20,7 +20,7 @@ public class Matrix {
 		for(int row = 5; row >=0; row--) {
 			if(matrix[row][column] == 255) {
 				matrix[row][column] = disk;
-				return column;
+				return row;
 			}
 		}
 		return 255;
@@ -103,7 +103,7 @@ public class Matrix {
 			y--;
 		}
 		if (sum >= 5) return true;	// Check for winning condition
-		return false;
+		else return false;
 	}
 	
 	@Override

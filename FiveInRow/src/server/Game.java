@@ -68,7 +68,7 @@ public class Game {
 		if(column > 8 || column < 0) return false;	// illegal column number selected 
 		int row = matrix.insertDisk(column, currPlayer);
 		if(row != 255) {
-			//if(checkWinner(row, column))return true;
+			if(checkWinner(row, column)) return true;
 			turn++;
 			if(currPlayer == 0) currPlayer = 1;
 			else currPlayer = 0;
