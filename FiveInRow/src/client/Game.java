@@ -48,16 +48,8 @@ public class Game {
 		}
 	}
 	
-	public String play(int column) throws IOException {
-		StringBuilder response = new StringBuilder();
-		ServerResponse sr = getResponse("/play?gameId=" + gameId + "&playerId=" + playerId + "&command=" + String.valueOf(column));
-		List<String> errorHeader = sr.getHeaders().getOrDefault("ERROR", null);
-		if(errorHeader != null)	response.append(errorHeader.get(0)).toString();
-		List<String> winnerHeader = sr.getHeaders().getOrDefault("WINNER", null);
-		if(winnerHeader != null) response.append(winnerHeader.get(0)).toString();
-		List<String> otherHeader = sr.getHeaders().getOrDefault("OTHERPLAYER", null);
-		if(otherHeader != null)	response.append(otherHeader.get(0)).toString();
-		return response.append(sr.getBoard()).toString();
+	public ServerResponse play(int column) throws IOException {
+		return getResponse("/play?gameId=" + gameId + "&playerId=" + playerId + "&command=" + String.valueOf(column));
 	}
 
 	private ServerResponse getResponse(String command) throws IOException {

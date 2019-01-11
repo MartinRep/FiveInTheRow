@@ -39,9 +39,9 @@ public class PlayGame extends HttpServlet {
 					response.addHeader("WINNER", game.getOtherPlayer(playerId));
 					endGame(gameId);
 				}else {
-					if(command == 255) endGame(gameId);	// One of the players disconnected
+					if(command == 9) endGame(gameId);	// One of the players disconnected
 					if(game.getCurrPlayer().getUuid().equals(playerId)) {		// Checks if it is players turn
-						if(!game.insertDisk(command - 1)) {	// Insert a disk or return error
+						if(!game.insertDisk(command)) {	// Insert a disk or return error
 							response.addHeader("ERROR", "Ilegal move");
 						} else if(game.getWinner() != 255) {	// Check if latest move didn't resulted in winning condition
 							response.addHeader("WINNER", game.getCurrPlayer().getName());
