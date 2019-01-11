@@ -55,6 +55,11 @@ public class Runner {
 							do {
 								sr = game.play(255);
 								errorHeader = sr.getHeaders().getOrDefault("ERROR", null);
+								try {
+									TimeUnit.SECONDS.sleep(1);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
 							} while (errorHeader.contains("Not your turn!"));
 							System.out.println(sr.getBoard().toString());
 						}
