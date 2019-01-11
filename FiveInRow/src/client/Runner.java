@@ -69,9 +69,6 @@ public class Runner {
 							System.out.println(sr.getBoard().toString());
 						}
 				}
-				else {
-					System.out.println("You're playing agains: " + otherHeader.get(0).toString());
-				}
 			} while (column != 10);
 			game.play(9);
 			keyboard.close();
