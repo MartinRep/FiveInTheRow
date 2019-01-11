@@ -3,7 +3,7 @@ package server;
 public class Matrix {
 	private int [][] matrix;
 
-	public Matrix() {		// Constructor with matrix initialization to 255 value. 0 is for fisrt player, 1 for second player
+	public Matrix() {		// Constructor with matrix initialization to 255 value. 0 is for first player, 1 for second player
 		matrix = new int[6][9];
 		for(int row = 0; row < 6; row++) {
 			for(int column = 0; column < 9; column++) {
@@ -123,7 +123,7 @@ public class Matrix {
 					break;
 				}
 			}
-			boardBuilder.append(System.getProperty("line.separator"));
+			boardBuilder.append("|");
 		}
 		return boardBuilder.toString();
 	}

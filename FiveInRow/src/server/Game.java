@@ -59,16 +59,16 @@ public class Game {
 	
 	public String getOtherPlayer(UUID thisPlayer) {
 		for (Player player : players) {
-			if(!player.getUuid().equals(thisPlayer)) return String.valueOf(player.getUuid());
+			if(!player.getUuid().equals(thisPlayer)) return String.valueOf(player.getName());
 		}
 		return null;
 	}
 	
 	public boolean insertDisk(int column) {
-		if(column > 8 && column < 0) return false;	// illegal column number selected 
+		if(column > 8 || column < 0) return false;	// illegal column number selected 
 		int row = matrix.insertDisk(column, currPlayer);
 		if(row != 255) {
-			if(checkWinner(row, column))return true;
+			//if(checkWinner(row, column))return true;
 			turn++;
 			if(currPlayer == 0) currPlayer = 1;
 			else currPlayer = 0;

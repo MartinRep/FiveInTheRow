@@ -49,10 +49,11 @@ public class Game {
 	}
 	
 	public String play(int column) throws IOException {
+		StringBuilder response = new StringBuilder();
 		ServerResponse sr = getResponse("/play?gameId=" + gameId + "&playerId=" + playerId + "&command=" + String.valueOf(column));
 		List<String> errorHeader = sr.getHeaders().getOrDefault("ERROR", null);
-		if(errorHeader != null)	return errorHeader.get(0);
-		else return sr.getBody();
+		if(errorHeader != null)	return response.append(errorHeader.get(0)).toString();
+		else return response.append(sr.getBoard()).toString();
 	}
 
 	private ServerResponse getResponse(String command) throws IOException {

@@ -29,7 +29,7 @@ public class Util {
 				Game newGame = new Game(playerName);		// If so creates new game
 				games.add(newGame);
 			} else latestGame.join(playerName);				// If game is waiting for second player, joins the existing game 
-			return latestGame;								
+			return games.get(games.size()-1);								
 		} else {
 			Game newGame = new Game(playerName);			// Creates new game if the array is empty. No game to join. 
 			games.add(newGame);
