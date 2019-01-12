@@ -25,6 +25,7 @@ public class NewGame extends HttpServlet {
     }
 
 	/**
+	 * Initialize Unit static class.
 	 * @see Servlet#init(ServletConfig)
 	 */
 	public void init(ServletConfig config) throws ServletException {
@@ -32,6 +33,8 @@ public class NewGame extends HttpServlet {
 	}
 
 	/**
+	 * Client send request with player's name and receives board as HTML body and 2 unique UUIDs in the header. Player Id and Game Id.
+	 * These are used to play the game through Playgame servlet class.
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

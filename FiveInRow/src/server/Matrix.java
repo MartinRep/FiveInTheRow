@@ -1,9 +1,18 @@
 package server;
 
+/**
+ * The Class Matrix.
+ * Holds board matrix and takes care of inserting players disk in available column and checks for winning condition. 
+ */
 public class Matrix {
+	
+	/** The matrix. */
 	private int [][] matrix;
 
-	public Matrix() {		// Constructor with matrix initialization to 255 value. 0 is for first player, 1 for second player
+	/**
+	 * Instantiates a new matrix to 255 value. 0 is for first player, 1 for second player
+	 */
+	public Matrix() {		
 		matrix = new int[6][9];
 		for(int row = 0; row < 6; row++) {
 			for(int column = 0; column < 9; column++) {
@@ -12,10 +21,23 @@ public class Matrix {
 		}	
 	}
 		
+	/**
+	 * Gets the matrix 2d Integer array.
+	 *
+	 * @return the matrix
+	 */
 	public int[][] getMatrix() {
 		return matrix;
 	}
 
+	/**
+	 * Insert player's specific disk to chosen column. The disk is "dropped" in the column and "lands" on top of the stack.
+	 * If the column is full function return 255 as error.     
+	 *
+	 * @param column. The column player decided to place they disk. 
+	 * @param disk. Player 1 represented as 0 (X), Player 2 is represented as 1 (O).
+	 * @return Integer. Row where disk was places.  
+	 */
 	public int insertDisk(int column, int disk) {	// insert disk on top of selected column, or return 255 in case the column is full already
 		for(int row = 5; row >=0; row--) {
 			if(matrix[row][column] == 255) {
@@ -26,6 +48,15 @@ public class Matrix {
 		return 255;
 	}
 	
+	/**
+	 * Check winning condition (5 identical disks in the row) in horizontal, vertical and both diagonal directions.
+	 * Starts at row, column position and counts how many disks are in the row. Increase sum variable for each identical disk until it finds different disk.
+	 * Do the same in opposite direction. if then sum is >= 5 return true, else reset sum and continues checking in other directions.   
+	 *
+	 * @param row. The row position of disk to check winning condition.
+	 * @param column.  The column position of disk to check winning condition.
+	 * @return true, if winner condition are met, 5 disks in row.
+	 */
 	public boolean checkWinner(int row, int column) {
 		int x = row;
 		int y = column;
@@ -106,6 +137,9 @@ public class Matrix {
 		else return false;
 	}
 	
+	/** 
+	 * @return Matrix representation as board. [ ] for empty slot, [X] for player 1 disk and [O] for Player 2 disk.
+	 **/
 	@Override
 	public String toString() {
 		StringBuilder boardBuilder = new StringBuilder();
