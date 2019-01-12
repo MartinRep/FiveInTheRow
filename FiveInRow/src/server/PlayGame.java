@@ -33,7 +33,7 @@ public class PlayGame extends HttpServlet {
 		try {
 			UUID gameId = UUID.fromString(request.getParameter("gameId"));
 			UUID playerId = UUID.fromString(request.getParameter("playerId"));
-			int command = Integer.valueOf(request.getParameter("command"));	// 0-9 column selection, 255 end of game command
+			int command = Integer.valueOf(request.getParameter("command"));	// 1-9 column selection, 255 end of game command
 			Game game = Util.findGame(gameId);	// return game or null, if game not found. This will be catch by exception and returns error
 			if(!game.isReadyToPlay()) response.addHeader("ERROR", "Waiting for another player");
 			else {
