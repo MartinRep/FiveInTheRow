@@ -4,20 +4,14 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 /**
- * The Class Util. Singleton class. Holds ArrayList of Game objects. Servlets gets the game object through this class. 
+ * The Static Class Util. Holds ArrayList of Game objects. Servlets gets the game object through this class. 
  */
 public class Util {
 	
 	/** The games. The ArrayList of Game objects*/
 	private static ArrayList<Game> games = null;
 	
-	/**
-	 * Singleton.
-	 */
-	private Util(){
-		
-	}
-	
+
 	/**
 	 * Initializes the the games ArrayList.
 	 */
