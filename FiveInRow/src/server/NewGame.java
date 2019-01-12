@@ -26,7 +26,6 @@ public class NewGame extends HttpServlet {
 
 	/**
 	 * Initialize Unit static class.
-	 * @see Servlet#init(ServletConfig)
 	 */
 	public void init(ServletConfig config) throws ServletException {
 		Util.init();

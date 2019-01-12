@@ -64,7 +64,7 @@ public class Util {
 	/**
 	 * End game when one of the players disconnect or the winning condition is met and both players have got the results. 
 	 *
-	 * @param gameId. Unique game's ID(UUID).
+	 * @param gameId. Unique game's ID(UUID)
 	 */
 	public static void endGame(UUID gameId) {				// Finish the game and deletes it from array. In case of player disconnect or wins 
 		Game game = findGame(gameId);

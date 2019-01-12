@@ -51,7 +51,7 @@ public class Matrix {
 	/**
 	 * Check winning condition (5 identical disks in the row) in horizontal, vertical and both diagonal directions.
 	 * Starts at row, column position and counts how many disks are in the row. Increase sum variable for each identical disk until it finds different disk.
-	 * Do the same in opposite direction. if then sum is >= 5 return true, else reset sum and continues checking in other directions.   
+	 * Do the same in opposite direction. if then sum is bigger or equal of 5 return true, else reset sum and continues checking in other directions.   
 	 *
 	 * @param row. The row position of disk to check winning condition.
 	 * @param column.  The column position of disk to check winning condition.
