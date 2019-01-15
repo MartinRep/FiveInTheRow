@@ -54,7 +54,6 @@ public class Runner {
 				}
 			} while (errorHeader.get(0).contains("Not your turn!"));
 			if(game != null) {
-				System.out.println(initial.getBoard());		// display initial game board
 				otherHeader = initial.getHeaders().getOrDefault("OTHERPLAYER", null);
 				do {			// keep querying server until other player makes a move
 					ServerResponse sr = game.play(column - 1);
@@ -66,7 +65,8 @@ public class Runner {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-				} while (errorHeader.contains("Not your turn!"));
+				} while (otherHeader == null);
+				System.out.println(initial.getBoard());		// display initial game board
 				do {	
 					System.out.println("You're playing agains: " + otherHeader.get(0).toString());
 					System.out.println("Enter Column number(1-9) 10 to Quit: ");
@@ -87,13 +87,19 @@ public class Runner {
 							do {			// keep querying server until other player makes a move
 								sr = game.play(255);
 								errorHeader = sr.getHeaders().getOrDefault("ERROR", null);
+								winnerHeader = sr.getHeaders().getOrDefault("WINNER", null);
+								if(winnerHeader != null) {		// Winning conditions were met and Winner is announced.
+									System.out.println("Game over. The winner is: " + winnerHeader.get(0).toString());
+									column = 10;
+									break;
+								}
 								try {
 									TimeUnit.SECONDS.sleep(1);
 								} catch (InterruptedException e) {
 									e.printStackTrace();
 								}
 							} while (errorHeader.contains("Not your turn!"));
-							if(errorHeader.contains("Other player disconected / Game doesn't exists.")) {		// Another played disconnected from the game
+							if(errorHeader != null && errorHeader.contains("Other player disconected / Game doesn't exists.")) {		// Another played disconnected from the game
 								System.out.println(errorHeader);
 								column = 10;
 							}
@@ -102,7 +108,7 @@ public class Runner {
 					}
 				} while (column != 10);		// keep prompting for new move, until quit command is entered by the player.
 			}
-			endGame();		// send Quit command to the server
+			//endGame();		// send Quit command to the server
 			keyboard.close();
 		} catch (IOException e) {
 			System.out.println("Error connecting to Server. " + e.getMessage());
