@@ -48,23 +48,40 @@ public class Runner {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-			} while (errorHeader.get(0).contains("Waiting for another player"));
-			System.out.println(initial.getBoard());		// display initial game board
-			otherHeader = initial.getHeaders().getOrDefault("OTHERPLAYER", null);
-			do {	
-				System.out.println("You're playing agains: " + otherHeader.get(0).toString());
-				System.out.println("Enter Column number(1-9) 10 to Quit: ");
-				column = keyboard.nextInt();
-				if(column != 10) {		// Player doesn't wants to quit the game
+				if(errorHeader.contains("Other player disconected / Game doesn't exists.")) {		// Another played disconnected from the game
+					System.out.println("Other player disconected / Game doesn't exists.");
+					endGame();
+				}
+			} while (errorHeader.get(0).contains("Not your turn!"));
+			if(game != null) {
+				System.out.println(initial.getBoard());		// display initial game board
+				otherHeader = initial.getHeaders().getOrDefault("OTHERPLAYER", null);
+				do {			// keep querying server until other player makes a move
 					ServerResponse sr = game.play(column - 1);
-					System.out.println(sr.getBoard().toString());
-					errorHeader = sr.getHeaders().getOrDefault("ERROR", null);		// readout all the headers send by server
-					winnerHeader = sr.getHeaders().getOrDefault("WINNER", null);
+					sr = game.play(255);
+					errorHeader = sr.getHeaders().getOrDefault("ERROR", null);
 					otherHeader = sr.getHeaders().getOrDefault("OTHERPLAYER", null);
-					if(winnerHeader != null) {		// Winning conditions were met and Winner is announced.
-						System.out.println("Game over. The winner is: " + winnerHeader.get(0).toString());
-						column = 10;
-					}else if(errorHeader != null)	System.out.println(errorHeader.get(0).toString());		// Error message found and displayed
+					try {
+						TimeUnit.SECONDS.sleep(1);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				} while (errorHeader.contains("Not your turn!"));
+				do {	
+					System.out.println("You're playing agains: " + otherHeader.get(0).toString());
+					System.out.println("Enter Column number(1-9) 10 to Quit: ");
+					column = keyboard.nextInt();
+					if(column != 10) {		// Player doesn't wants to quit the game
+						ServerResponse sr = game.play(column - 1);
+						System.out.println(sr.getBoard().toString());
+						errorHeader = sr.getHeaders().getOrDefault("ERROR", null);		// readout all the headers send by server
+						winnerHeader = sr.getHeaders().getOrDefault("WINNER", null);
+						otherHeader = sr.getHeaders().getOrDefault("OTHERPLAYER", null);
+						if(winnerHeader != null) {		// Winning conditions were met and Winner is announced.
+							System.out.println("Game over. The winner is: " + winnerHeader.get(0).toString());
+							column = 10;
+							break;
+						}else if(errorHeader != null)	System.out.println(errorHeader.get(0).toString());		// Error message found and displayed
 						else {
 							System.out.printf("Waiting for %s turn...\n", otherHeader);
 							do {			// keep querying server until other player makes a move
@@ -82,14 +99,19 @@ public class Runner {
 							}
 							System.out.println(sr.getBoard().toString());		// display the game board representation of the Matrix.
 						}
-				}
-			} while (column != 10);		// keep prompting for new move, until quit command is entered by the player.
-			game.play(9);		// send Quit command to the server
+					}
+				} while (column != 10);		// keep prompting for new move, until quit command is entered by the player.
+			}
+			endGame();		// send Quit command to the server
 			keyboard.close();
-			game = null;
 		} catch (IOException e) {
 			System.out.println("Error connecting to Server. " + e.getMessage());
 		}
+	}
+	
+	private static void endGame() throws IOException {
+		if(game != null) game.play(9);
+		game = null;
 	}
 	
 	/* 
@@ -99,7 +121,7 @@ public class Runner {
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
-		if(game != null) game.play(9);
+		endGame();
 	}
 	
 	
