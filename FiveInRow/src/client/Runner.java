@@ -51,6 +51,7 @@ public class Runner {
 				if(errorHeader.contains("Other player disconected / Game doesn't exists.")) {		// Another played disconnected from the game
 					System.out.println("Other player disconected / Game doesn't exists.");
 					endGame();
+					break;
 				}
 			} while (errorHeader.get(0).contains("Not your turn!"));
 			if(game != null) {
@@ -108,7 +109,7 @@ public class Runner {
 					}
 				} while (column != 10);		// keep prompting for new move, until quit command is entered by the player.
 			}
-			//endGame();		// send Quit command to the server
+			endGame();		// send Quit command to the server
 			keyboard.close();
 		} catch (IOException e) {
 			System.out.println("Error connecting to Server. " + e.getMessage());
